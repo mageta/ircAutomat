@@ -13,3 +13,11 @@ TARGET_LINK_LIBRARIES(${ircAutomat_BIN} ${ircAutomat_LIBS})
 SET_TARGET_PROPERTIES(${ircAutomat_BIN} PROPERTIES VERSION "${APPLICATION_VERSION_STRING}")
 					
 INSTALL(TARGETS ${ircAutomat_BIN} DESTINATION bin)
+
+#
+# Subdirectories
+#
+
+if(Plugins)
+	ADD_SUBDIRECTORY(plugins)
+endif(Plugins)

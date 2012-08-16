@@ -26,11 +26,13 @@ SET (APPLICATION_ID "${APPLICATION_VENDOR_ID}.${CMAKE_PROJECT_NAME}")
 # Some Project-Options
 #
 
-OPTION( Testing		"Testing"	ON )
+OPTION( Testing		"Testing"		ON )
 
-OPTION( Optimize	"Optimize"	ON )
-OPTION( Profile		"Profile"	OFF )
-OPTION( Debug		"Debug"		ON )
+OPTION( Optimize	"Optimize"		ON )
+OPTION( Profile		"Profile"		OFF )
+OPTION( Debug		"Debug"			ON )
+OPTION( DebugMake	"Verbose Make Output"	OFF )
+OPTION( Plugins		"Build Plugins"		ON )
 
 #
 # Some more Options but rather static ones
@@ -88,8 +90,6 @@ if(Debug)
 	set( CMAKE_C_FLAGS	"${CMAKE_C_FLAGS} -ggdb -Wall -Wextra")
 	set( CMAKE_CXX_FLAGS	"${CMAKE_CXX_FLAGS} -ggdb -Wall -Wextra")
 
-#	SET (CMAKE_VERBOSE_MAKEFILE 0) # Use 1 for debugging, 0 for release
-
 	if(Optimize)
 		message(STATUS "Optimization: OFF.. (DEBUG IS ON)")
 	endif(Optimize)
@@ -106,6 +106,10 @@ else(Debug)
 		set( CMAKE_CXX_FLAGS	"${CMAKE_CXX_FLAGS} -march=native -O3 -pipe -fomit-frame-pointer")
 	endif(Optimize)
 endif(Debug)
+
+if(DebugMake)
+	SET (CMAKE_VERBOSE_MAKEFILE 1) # Use 1 for debugging, 0 for release
+endif(DebugMake)
 
 if(Profile)
 	message(STATUS "Profiling: ON...")
@@ -130,7 +134,7 @@ endif(C99)
 SET (MAINFOLDER ${PROJECT_SOURCE_DIR})
 SET (EXECUTABLE_OUTPUT_PATH "${MAINFOLDER}/bin")
 SET (PLUGIN_OUTPUT_PATH "${MAINFOLDER}/bin/plugins")
-SET (LIBRARY_OUTPUT_PATH "${MAINFOLDER}/lib")
+SET (LIBRARY_OUTPUT_PATH "${MAINFOLDER}/bin/lib")
 
 #
 # Project Search Paths
@@ -149,7 +153,8 @@ INCLUDE_DIRECTORIES("${MAINFOLDER}/include")
 # BOOST
 #
 SET (Boost_ADDITIONAL_VERSIONS "1.39" "1.39.0" "1.40" "1.40.0" "1.41" "1.41.0" "1.42" "1.42.0" "1.43" "1.43.0" "1.44" "1.44.0" "1.45" "1.45.0" "1.46" "1.46.0" "1.46.1" "1.47" "1.47.0" "1.48" "1.48.0" "1.49" "1.49.0" "1.50" "1.50.0")
-FIND_PACKAGE (Boost 1.46.1 COMPONENTS "date_time" "filesystem" "graph" "iostreams" "program_options" "regex" "serialization" "signals" "system" "thread" "wserialization" REQUIRED)
+# FIND_PACKAGE (Boost 1.46.1 COMPONENTS "date_time" "filesystem" "graph" "iostreams" "program_options" "regex" "serialization" "signals" "system" "thread" "wserialization" REQUIRED)
+FIND_PACKAGE (Boost 1.46.1 COMPONENTS "program_options" REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
