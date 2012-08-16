@@ -1,0 +1,15 @@
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+*.o
+*.a
+*.so
+cmake_install.cmake.user
+CMakeLists.txt.user
+info.h
+bin/
+*.swp
+*.swo
+*.swn
