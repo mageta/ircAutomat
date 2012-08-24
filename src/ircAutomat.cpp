@@ -5,6 +5,7 @@
 namespace po = boost::program_options;
 
 #include "info.h"
+#include "pluginManager/pluginManager.hpp"
 
 using namespace std;
 
@@ -46,6 +47,10 @@ main(int argc, char ** argv)
 		cerr << "error: " << e.what() << endl;
 		return 1;
 	}
+
+	PluginManager& pm = PluginManager::getPluginManager();
+
+	pm.loadPlugin("plugins/plugin_testplugin.so");
 
 	return 0;
 }

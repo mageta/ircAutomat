@@ -136,6 +136,8 @@ SET (EXECUTABLE_OUTPUT_PATH "${MAINFOLDER}/bin")
 SET (PLUGIN_OUTPUT_PATH "${MAINFOLDER}/bin/plugins")
 SET (LIBRARY_OUTPUT_PATH "${MAINFOLDER}/bin/lib")
 
+SET (PLUGIN_PREFIX "plugin_")
+
 #
 # Project Search Paths
 #
