@@ -6,6 +6,7 @@ namespace po = boost::program_options;
 
 #include "info.h"
 #include "pluginManager/pluginManager.hpp"
+#include "log.h"
 
 using namespace std;
 
