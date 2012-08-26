@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cstdio>
 
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
@@ -13,7 +14,11 @@ using namespace std;
 int
 main(int argc, char ** argv)
 {
+	FILELog::ReportingLevel().Set(logDEBUG);
+
 	try {
+		FILE_LOG_LONG(logDEBUG) << "starting cli-options-reading";
+
 		po::options_description desc("Allowed options");
 		desc.add_options()
 			("help,h", "produce help message")

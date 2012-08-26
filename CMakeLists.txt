@@ -84,6 +84,7 @@ endif(Require_NIX)
 
 if(Debug)
 	add_definitions(-DDEBUG)
+	add_definitions(-DFILELOG_MAX_LEVEL=logDEBUG4)
 
 	message(STATUS "Debug-Options: ON..")
 
@@ -95,6 +96,9 @@ if(Debug)
 	endif(Optimize)
 else(Debug)
 	add_definitions(-DNDEBUG)
+	add_definitions(-DFILELOG_MAX_LEVEL=logINFO)
+
+	message(STATUS "Debug-Options: OFF..")
 
 	set( CMAKE_C_FLAGS	"${CMAKE_C_FLAGS} -Wall")
 	set( CMAKE_CXX_FLAGS	"${CMAKE_CXX_FLAGS} -Wall")

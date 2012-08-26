@@ -23,28 +23,37 @@ struct Fenced
 {
     Fenced(const Fenced<T>& f)
     {
-        Set(f.t);
+	Set(f.t);
     }
     Fenced(const T& t)
     {
-        Set(t);
+	Set(t);
     }
     Fenced& operator =(const Fenced<T>& f)
     {
-        Set(f.t);
-        return *this;
+	Set(f.t);
+	return *this;
     }
     T Get()
     {
-        BOOST_STATIC_ASSERT(sizeof(AO_t) == sizeof(T));
-        //AO_t value = AO_load_read(reinterpret_cast<AO_t*>(&t));
-        AO_t value = AO_load_acquire_read(reinterpret_cast<AO_t*>(&t));
-        return reinterpret_cast<T&>(value);
+	BOOST_STATIC_ASSERT(sizeof(AO_t) == sizeof(T));
+	BOOST_STATIC_ASSERT(alignof(AO_t) == alignof(T));
+
+	//AO_t value = AO_load_read(reinterpret_cast<AO_t*>(&t));
+	AO_t value = AO_load_acquire_read(reinterpret_cast<AO_t*>(&t));
+
+//	return reinterpret_cast<T&>(value);
+	return (T) value;
     }
     void Set(T value)
     {
-        //AO_store_write(reinterpret_cast<AO_t*>(&t), reinterpret_cast<AO_t&>(value));
-        AO_store_release_write(reinterpret_cast<AO_t*>(&t), reinterpret_cast<AO_t&>(value));
+	BOOST_STATIC_ASSERT(sizeof(AO_t) == sizeof(T));
+	BOOST_STATIC_ASSERT(alignof(AO_t) == alignof(T));
+
+	//AO_store_write(reinterpret_cast<AO_t*>(&t), reinterpret_cast<AO_t&>(value));
+//        AO_store_release_write(reinterpret_cast<AO_t*>(&t), reinterpret_cast<AO_t&>(value));
+
+	AO_store_release_write(reinterpret_cast<AO_t*>(&t), (AO_t) value);
     }
 private:
     T t;

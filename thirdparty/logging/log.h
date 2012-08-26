@@ -9,13 +9,13 @@
 inline std::string NowTime();
 
 enum TLogLevel : unsigned long {
-	logERROR, 
-	logWARNING, 
-	logINFO, 
-	logDEBUG, 
-	logDEBUG1, 
-	logDEBUG2, 
-	logDEBUG3, 
+	logERROR,
+	logWARNING,
+	logINFO,
+	logDEBUG,
+	logDEBUG1,
+	logDEBUG2,
+	logDEBUG3,
 	logDEBUG4
 };
 
@@ -65,7 +65,7 @@ template <typename T>
 Log<T>::~Log()
 {
     if (file)
-        os << " (" << file << ":" << line << ")";
+	os << " (" << file << ":" << line << ")";
     os << std::endl;
     T::Output(os.str());
 }
@@ -88,21 +88,21 @@ template <typename T>
 TLogLevel Log<T>::FromString(const std::string& level)
 {
     if (level == "DEBUG4")
-        return logDEBUG4;
+	return logDEBUG4;
     if (level == "DEBUG3")
-        return logDEBUG3;
+	return logDEBUG3;
     if (level == "DEBUG2")
-        return logDEBUG2;
+	return logDEBUG2;
     if (level == "DEBUG1")
-        return logDEBUG1;
+	return logDEBUG1;
     if (level == "DEBUG")
-        return logDEBUG;
+	return logDEBUG;
     if (level == "INFO")
-        return logINFO;
+	return logINFO;
     if (level == "WARNING")
-        return logWARNING;
+	return logWARNING;
     if (level == "ERROR")
-        return logERROR;
+	return logERROR;
     Log<T>().Get(logWARNING) << "Unknown logging level '" << level << "'. Using INFO level as default.";
     return logINFO;
 }
@@ -114,7 +114,7 @@ public:
     static void Output(const std::string& msg);
 };
 
-#include <boost/thread/once.hpp> 
+#include <boost/thread/once.hpp>
 
 inline Fenced<FILE*>& OutputStream()
 {
@@ -138,7 +138,7 @@ inline void Output2FILE::Output(const std::string& msg)
 {
     FILE* pStream = Stream().Get();
     if (!pStream)
-        return;
+	return;
     fprintf(pStream, "%s", msg.c_str());
     fflush(pStream);
 }
@@ -167,6 +167,11 @@ class FILELOG_DECLSPEC FILELog : public Log<Output2FILE> {};
     else if (level > FILELog::ReportingLevel().Get() || !Output2FILE::Stream().Get()) ; \
     else FILELog().Get(level)
 
+#define FILE_LOG_LONG(level) \
+    if (level > FILELOG_MAX_LEVEL) ;\
+    else if (level > FILELog::ReportingLevel().Get() || !Output2FILE::Stream().Get()) ; \
+    else FILELog().Set(__FILE__, __LINE__).Get(level)
+
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 
 #include <windows.h>
@@ -176,7 +181,7 @@ inline std::string NowTime()
     const int MAX_LEN = 200;
     char buffer[MAX_LEN];
     if (GetTimeFormatA(LOCALE_USER_DEFAULT, 0, 0, "HH':'mm':'ss", buffer, MAX_LEN) == 0)
-        return "Error in NowTime()";
+	return "Error in NowTime()";
 
     char result[100] = {0};
     static DWORD first = GetTickCount();
@@ -196,7 +201,7 @@ inline std::string NowTime()
     tm r;
     strftime(buffer, sizeof(buffer), "%X", localtime_r(&tv.tv_sec, &r));
     char result[100];
-    sprintf(result, "%s.%06ld", buffer, (long)tv.tv_usec); 
+    sprintf(result, "%s.%06ld", buffer, (long)tv.tv_usec);
     return result;
 }
 
