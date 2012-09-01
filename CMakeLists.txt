@@ -160,7 +160,7 @@ INCLUDE_DIRECTORIES("${MAINFOLDER}/include")
 # BOOST
 #
 # FIND_PACKAGE (Boost 1.46.1 COMPONENTS "date_time" "filesystem" "graph" "iostreams" "program_options" "regex" "serialization" "signals" "system" "thread" "wserialization" REQUIRED)
-FIND_PACKAGE (Boost 1.48 COMPONENTS program_options thread REQUIRED)
+FIND_PACKAGE (Boost 1.48 COMPONENTS program_options thread filesystem REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 

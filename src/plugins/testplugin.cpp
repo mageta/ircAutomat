@@ -6,6 +6,10 @@
 
 using namespace std;
 
+extern "C" {
+	shared_ptr<Plugin> get_plugin();
+}
+
 struct test_deleter
 {
 	void operator()(Plugin * p) {
@@ -13,10 +17,6 @@ struct test_deleter
 		delete p;
 	}
 };
-
-extern "C" {
-	shared_ptr<Plugin> get_plugin();
-}
 
 shared_ptr<Plugin> get_plugin()
 {

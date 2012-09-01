@@ -9,7 +9,7 @@
 inline std::string NowTime();
 
 enum TLogLevel : unsigned long {
-	logERROR,
+	logERROR = 1,
 	logWARNING,
 	logINFO,
 	logDEBUG,
@@ -80,7 +80,7 @@ Fenced<TLogLevel>& Log<T>::ReportingLevel()
 template <typename T>
 std::string Log<T>::ToString(TLogLevel level)
 {
-    static const char* const buffer[] = {"ERROR", "WARNING", "INFO", "DEBUG", "DEBUG1", "DEBUG2", "DEBUG3", "DEBUG4"};
+    static const char* const buffer[] = {"", "ERROR", "WARNING", "INFO", "DEBUG", "DEBUG1", "DEBUG2", "DEBUG3", "DEBUG4"};
     return buffer[level];
 }
 
@@ -163,14 +163,19 @@ class FILELOG_DECLSPEC FILELog : public Log<Output2FILE> {};
 #endif
 
 #define FILE_LOG(level) \
-    if (level > FILELOG_MAX_LEVEL) ;\
-    else if (level > FILELog::ReportingLevel().Get() || !Output2FILE::Stream().Get()) ; \
-    else FILELog().Get(level)
+	if ((level) > FILELOG_MAX_LEVEL) \
+		do {} while(0); \
+	else if (((level) > FILELog::ReportingLevel().Get()) \
+		 || !Output2FILE::Stream().Get()) \
+		do {} while(0); \
+	else FILELog().Get(level)
 
-#define FILE_LOG_LONG(level) \
-    if (level > FILELOG_MAX_LEVEL) ;\
-    else if (level > FILELog::ReportingLevel().Get() || !Output2FILE::Stream().Get()) ; \
-    else FILELog().Set(__FILE__, __LINE__).Get(level)
+/*
+ *#define FILE_LOG_LONG(level) \
+ *    if (level > FILELOG_MAX_LEVEL) ;\
+ *    else if (level > FILELog::ReportingLevel().Get() || !Output2FILE::Stream().Get()) ; \
+ *    else FILELog().Set(__FILE__, __LINE__).Get(level)
+ */
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 

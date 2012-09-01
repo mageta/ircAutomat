@@ -17,7 +17,7 @@ main(int argc, char ** argv)
 	FILELog::ReportingLevel().Set(logDEBUG);
 
 	try {
-		FILE_LOG_LONG(logDEBUG) << "starting cli-options-reading";
+		FILE_LOG(logDEBUG) << "starting cli-options-reading";
 
 		po::options_description desc("Allowed options");
 		desc.add_options()
@@ -50,13 +50,18 @@ main(int argc, char ** argv)
 		}
 	}
 	catch(exception& e) {
-		cerr << "error: " << e.what() << endl;
+		FILE_LOG(logERROR) << "error: " << e.what();
 		return 1;
 	}
 
 	PluginManager& pm = PluginManager::getPluginManager();
 
-	pm.loadPlugin("plugins/plugin_testplugin.so");
+	auto plugins = pm.loadPlugins("plugins");
+	FILE_LOG(logDEBUG) << "loaded plugins: " << plugins.size();
+
+	for (auto it = plugins.begin(); it != plugins.end(); ++it)
+		FILE_LOG(logDEBUG) << "plugin: <" << (*it).get() <<">,"
+				   << " count: " << (*it).use_count();
 
 	return 0;
 }
